@@ -54,6 +54,16 @@ public class CirQueue<T> implements Queue<T> {
 			}
 		return null;
 	}
+	public void dequeue(){
+		if(!isEmpty()){
+			if(rear.getLink() == rear){
+				rear = null;
+			}else{
+			current = rear.getLink();
+			rear.setLink(current.getLink());
+			}
+		}
+	}
 	public String[] read(){
 		if(!isEmpty()){
 			String [] list = new String[size()] ;

@@ -6,20 +6,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import support.ThreadDemo;
+import support.Customer;
+
+
 
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
+ * This code was edited or generated using CloudGarden's Jigloo
+ * SWT/Swing GUI Builder, which is free for non-commercial
+ * use. If Jigloo is being used commercially (ie, by a corporation,
+ * company or business for any purpose whatever) then you
+ * should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details.
+ * Use of Jigloo implies acceptance of these licensing terms.
+ * A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+ * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+ * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 public class SimulPanel extends JPanel implements ActionListener  {
 	private JList waitList;
 	private JLabel stoolLabel;
@@ -31,8 +33,6 @@ public class SimulPanel extends JPanel implements ActionListener  {
 	private JLabel boothLabel;
 	private JButton startButton;
 	private JList reserveList;
-	private JButton removeButton;
-	private JButton returnButton;
 	private JLabel boothLabel4;
 	private JLabel boothLabel3;
 	private JLabel boothLabel2;
@@ -46,42 +46,89 @@ public class SimulPanel extends JPanel implements ActionListener  {
 	int hour = 9;
 	int minute = 0;
 	int totalTime;
-	Thread th2 = new Thread();
-	/**
-	* Auto-generated main method to display this 
-	* JPanel inside a new JFrame.
-	 * @throws InterruptedException 
-	*/
 
-	
+
+
+
+	/**
+	 * Auto-generated main method to display this 
+	 * JPanel inside a new JFrame.
+	 * @throws InterruptedException 
+	 */
+
+	public int getMinute() {
+		return minute;
+	}
+	public void setMinute(int minute) {
+		this.minute = minute;
+	}
+	public int getHour() {
+		return hour;
+	}
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
 	public SimulPanel()  {
 		super();
 		initGUI();
-		th2.start();
 	}
 	public void resetList(){
-		waitList = new JList(new DefaultListModel());
-		DefaultListModel waitListModel = (DefaultListModel) waitList.getModel();
+		//waitList = new JList(new DefaultListModel());
+
 		this.add(waitList);
-		
-	     for (int i = 0; i < MainFrame.waitingQ.read().length; i++) {
-	            waitListModel.addElement(MainFrame.waitingQ.read()[i]);
-	     }
-	     reserveList = new JList(new DefaultListModel());
-			DefaultListModel reserveListModel = (DefaultListModel) reserveList.getModel();
-			this.add(reserveList);
-			/*String[] bar = {
-		            "Bar 1", "Bar 2", "Bar 3", "Bar 4"};*/
-		     for (int i = 0; i < MainFrame.reserveQ.read().length; i++) {
-		            reserveListModel.addElement(MainFrame.reserveQ.read()[i]);
-		     }
-	     
+		DefaultListModel waitListModel = (DefaultListModel) waitList.getModel();
+		for (int i = 0; i < MainFrame.waitingQ.read().length; i++) {
+			waitListModel.addElement(MainFrame.waitingQ.read()[i]);
+		}
+
+		this.add(reserveList);
+		DefaultListModel reserveListModel = (DefaultListModel) reserveList.getModel();
+		for (int i = 0; i < MainFrame.reserveQ.read().length; i++) {
+			reserveListModel.addElement(MainFrame.reserveQ.read()[i]);
+		}
+
+	}
+	public void resetWaitList(){
+		waitList.setVisible(false);
+		DefaultListModel waitListModel = (DefaultListModel) waitList.getModel();
+		waitListModel.removeAllElements();
+		this.add(waitList);
+		if(MainFrame.waitingQ.size() == 0)
+		{
+			waitListModel.addElement("Empty");
+		}else{
+			for (int i = 0; i < MainFrame.waitingQ.read().length; i++) {
+				waitListModel.addElement(MainFrame.waitingQ.read()[i]);
+
+			}
+		}
+
+		waitList.setVisible(true);
+	}
+	public void resetReserveList(){
+		reserveList.setVisible(false);
+		DefaultListModel reserveListModel = (DefaultListModel) reserveList.getModel();
+		reserveListModel.removeAllElements();
+		this.add(reserveList);
+		if(MainFrame.reserveQ.size() == 0)
+		{
+			reserveListModel.addElement("Empty");
+		}else{
+			for (int i = 0; i < MainFrame.reserveQ.read().length; i++) {
+				reserveListModel.addElement(MainFrame.reserveQ.read()[i]);
+
+			}
+		}
+		reserveList.setVisible(true);
 	}
 	private void initGUI(){
-		
+
 		try {
 			setPreferredSize(new Dimension(1000, 800));
 			this.setLayout(null);
+			waitList = new JList(new DefaultListModel());
+			reserveList = new JList(new DefaultListModel());
+
 			{
 				resetList();
 				waitList.setBounds(14, 74, 439, 285);
@@ -97,7 +144,7 @@ public class SimulPanel extends JPanel implements ActionListener  {
 			{
 				stoolLabel = new JLabel();
 				this.add(stoolLabel);
-				stoolLabel.setText("Stool 1");
+				stoolLabel.setText("Bar 1");
 				stoolLabel.setBounds(459, 107, 74, 44);
 				stoolLabel.setFont(new java.awt.Font("¸¼Àº °íµñ",0,20));
 			}
@@ -111,21 +158,21 @@ public class SimulPanel extends JPanel implements ActionListener  {
 			{
 				stoolLabel2 = new JLabel();
 				this.add(stoolLabel2);
-				stoolLabel2.setText("Stool 2");
+				stoolLabel2.setText("Bar 2");
 				stoolLabel2.setBounds(587, 107, 74, 45);
 				stoolLabel2.setFont(new java.awt.Font("¸¼Àº °íµñ",0,20));
 			}
 			{
 				stoolLabel3 = new JLabel();
 				this.add(stoolLabel3);
-				stoolLabel3.setText("Stool 3");
+				stoolLabel3.setText("Bar 3");
 				stoolLabel3.setBounds(716, 106, 78, 47);
 				stoolLabel3.setFont(new java.awt.Font("¸¼Àº °íµñ",0,20));
 			}
 			{
 				stoolLabel4 = new JLabel();
 				this.add(stoolLabel4);
-				stoolLabel4.setText("Stool 4");
+				stoolLabel4.setText("Bar 4");
 				stoolLabel4.setBounds(845, 107, 78, 43);
 				stoolLabel4.setFont(new java.awt.Font("¸¼Àº °íµñ",0,20));
 			}
@@ -200,35 +247,20 @@ public class SimulPanel extends JPanel implements ActionListener  {
 				boothLabel4.setFont(new java.awt.Font("¸¼Àº °íµñ",0,20));
 			}
 			{
-				returnButton = new JButton();
-				this.add(returnButton);
-				returnButton.setText("Reserve");
-				returnButton.setBounds(768, 672, 181, 70);
-				returnButton.setFont(new java.awt.Font("¸¼Àº °íµñ",0,28));
-				returnButton.addActionListener(this);
-			}
-			{
-				removeButton = new JButton();
-				this.add(removeButton);
-				removeButton.setText("Remove");
-				removeButton.setBounds(85, 672, 185, 68);
-				removeButton.setFont(new java.awt.Font("¸¼Àº °íµñ",0,28));
-			}
-			{
-				
-			    resetList();
+
+
 				reserveList.setBounds(14, 365, 439, 265);
 				reserveList.setFont(new java.awt.Font("¸¼Àº °íµñ",0,18));
 			}
 			{
 				//timeLabel.setText(hour + " : "+minute);
-				
-				
+
+
 				timeLabel = new JLabel();
 				this.add(timeLabel);
-				
+
 				//timeLabel.setText(hour + " : " +minute);
-				
+
 				timeLabel.setBounds(819, 12, 159, 89);
 				timeLabel.setFont(new java.awt.Font("¸¼Àº °íµñ",0,36));
 			}
@@ -236,7 +268,8 @@ public class SimulPanel extends JPanel implements ActionListener  {
 				startButton = new JButton();
 				this.add(startButton);
 				startButton.setText("Start");
-				startButton.setBounds(290, 672, 39, 24);
+				startButton.setBounds(786, 672, 157, 68);
+				startButton.setFont(new java.awt.Font("¸¼Àº °íµñ",0,24));
 				startButton.addActionListener(this);
 			}
 		} catch (Exception e) {
@@ -247,42 +280,543 @@ public class SimulPanel extends JPanel implements ActionListener  {
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{
-		if (event.getActionCommand().equals("Reserve")){	
-			MainFrame.newreservepanel();
-		}
 		if(event.getActionCommand().equals("Start")){
-			ThreadDemo th1 = new ThreadDemo();
+			ThreadDemo123 th1 = new ThreadDemo123();			
 			th1.start();
+			for(int i = 0; i <MainFrame.reserveQ.size(); i++){
+				Thread2 th2 = new Thread2();
+				th2.start();			
+			}
+			for(int i = 0; i <MainFrame.waitingQ.size(); i++){
+				Thread3 th3 = new Thread3();
+				th3.start();
+			}
+			//System.out.println(MainFrame.reserveQ);
+
 			startButton.setVisible(false);
-			/*int totalTime = (((MainFrame.reserveQ.next().getHour()-900)/100)*60)+
-					((MainFrame.reserveQ.next().getHour()-900)-((MainFrame.reserveQ.next().getHour()-900)/100)*100);
-			System.out.println(totalTime);*/
+
 		}
 	}
+	public class Thread3 extends Thread
+	{
 
+		public String checkIn()
+		{
+
+			if(stoolLabel.getText().equals("Bar 1"))
+			{
+				stoolLabel.setText("occupied");
+				return "Bar 1";
+				//return true;
+			}else if(stoolLabel2.getText().equals("Bar 2"))
+			{
+				stoolLabel2.setText("occupied");
+				return "Bar 2";
+				//return true;
+			}else if(stoolLabel3.getText().equals("Bar 3"))
+			{
+				stoolLabel3.setText("occupied");
+				return "Bar 3";
+				//return true;
+			}else if(stoolLabel4.getText().equals("Bar 4"))
+			{
+				stoolLabel4.setText("occupied");
+				return "Bar 4";
+				//return true;
+			}else if(wsLabel1.getText().equals("Window 1"))
+			{
+				wsLabel1.setText("occupied");
+				return "Window 1";
+				//return true;
+			}else if(wsLabel2.getText().equals("Window 2"))
+			{
+				wsLabel2.setText("occupied");
+				return "Window 2";
+				//return true;
+			}else if(wsLabel3.getText().equals("Window 3"))
+			{
+				wsLabel3.setText("occupied");
+				return "Window 3";
+				//return true;
+			}else if(wsLabel4.getText().equals("Window 4"))
+			{
+				wsLabel4.setText("occupied");
+				return "Window 4";
+				//return true;
+			}else if(boothLabel1.getText().equals("Booth 1"))
+			{
+				boothLabel1.setText("occupied");
+				return "Booth 1";
+				//return true;
+			}else if(boothLabel2.getText().equals("Booth 2"))
+			{
+				boothLabel2.setText("occupied");
+				return "Booth 2";
+				//return true;
+			}else if(boothLabel3.getText().equals("Booth 3"))
+			{
+				boothLabel3.setText("occupied");
+				return "Booth 3";
+				//return true;
+			}else if(boothLabel4.getText().equals("Booth 4"))
+			{
+				boothLabel4.setText("occupied");
+				return "Booth 4";
+				//return true;
+			}else{
+				return null;
+			}
+
+		}
+		public void run(){
+			Customer urTurn = MainFrame.reserveQ.next();
+			String seat = checkIn();
+			for(int i = 0; i<720; i++)
+			{
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				if(seat.equals("Bar 1"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();
+					for(int j = 0; j < 15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					stoolLabel.setText("Bar 1");
+
+					break;
+				}
+				if(seat.equals("Bar 2"))
+				{
+
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					stoolLabel2.setText("Bar 2");						
+					break;
+				}
+				if(seat.equals("Bar 3"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					stoolLabel3.setText("Bar 3");
+
+				}
+				if(seat.equals("Bar 4"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					stoolLabel4.setText("Bar 4");
+
+				}
+				if(seat.equals("Window 1"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					wsLabel1.setText("Window 1");
+				}
+				if(seat.equals("Window 2"))
+				{
+
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}		
+					wsLabel2.setText("Window 2");
+
+				}
+				if(seat.equals("Window 3"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}			
+					wsLabel3.setText("Window 3");
+
+				}
+				if(seat.equals("Window 4"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					wsLabel4.setText("Window 4");
+				}
+				if(seat.equals("Booth 1"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					boothLabel1.setText("Booth 1");
+				}
+				if(seat.equals("Booth 2"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}			
+					boothLabel2.setText("Booth 2");
+				}
+				if(seat.equals("Booth 3"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}			
+					boothLabel3.setText("Booth 3");
+				}
+				if(seat.equals("Booth 4"))
+				{
+					MainFrame.waitingQ.dequeue();						
+					resetWaitList();			
+					for(int j = 0; j <15; j++){
+						try {
+							Thread.sleep(500);
+
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}			
+					}				
+					boothLabel4.setText("Booth 4");
+				}
+			}
+		}
+	}
 	public class Thread2 extends Thread
 	{
 		public void run(){
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Customer urTurn = MainFrame.reserveQ.next();
+			for(int i = 0; i<720; i++)
+			{
+
+				minute++;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(minute == 60)
+				{
+					hour++;
+					minute = 0;
+				}
+				int transferTime = urTurn.getHour()-900;
+				int totalTime = ((transferTime/100)*60)+(transferTime%100);
+				if(totalTime == i)
+				{
+
+					if(urTurn.getSeat().equals("Bar 1"))
+					{
+						stoolLabel.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();
+						for(int j = 0; j < 15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						stoolLabel.setText("Bar 1");
+
+						break;
+					}
+					if(urTurn.getSeat().equals("Bar 2"))
+					{
+						stoolLabel2.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						stoolLabel2.setText("Bar 2");						
+						break;
+					}
+					if(urTurn.getSeat().equals("Bar 3"))
+					{
+						stoolLabel3.setText("occupied");				
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						stoolLabel3.setText("Bar 3");
+
+					}
+					if(urTurn.getSeat().equals("Bar 4"))
+					{
+
+						stoolLabel4.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						stoolLabel4.setText("Bar 4");
+
+					}
+					if(urTurn.getSeat().equals("Window 1"))
+					{
+						wsLabel1.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						wsLabel1.setText("Window 1");
+					}
+					if(urTurn.getSeat().equals("Window 2"))
+					{
+
+						wsLabel2.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						wsLabel2.setText("Window 2");
+
+					}
+					if(urTurn.getSeat().equals("Window 3"))
+					{
+
+						wsLabel3.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						wsLabel3.setText("Window 3");
+
+					}
+					if(urTurn.getSeat().equals("Window 4"))
+					{
+
+						wsLabel4.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						wsLabel4.setText("Window 4");
+					}
+					if(urTurn.getSeat().equals("Booth 1"))
+					{
+						boothLabel1.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						boothLabel1.setText("Booth 1");
+					}
+					if(urTurn.getSeat().equals("Booth 2"))
+					{
+						boothLabel2.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						boothLabel2.setText("Booth 2");
+					}
+					if(urTurn.getSeat().equals("Booth 3"))
+					{
+						boothLabel3.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						boothLabel3.setText("Booth 3");
+					}
+					if(urTurn.getSeat().equals("Booth 4"))
+					{
+						boothLabel4.setText("occupied");
+						MainFrame.reserveQ.dequeue();						
+						resetReserveList();			
+						for(int j = 0; j <15; j++){
+							try {
+								Thread.sleep(500);
+
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}			
+						}				
+						boothLabel4.setText("Booth 4");
+					}
+				}
+			}
 		}
-		}
+
+
 	}
-	public class ThreadDemo extends Thread 
+	public class ThreadDemo123 extends Thread 
 	{
 		int minute = 0;
 		int hour = 9;
-		Thread2 th3 = new Thread2();
+
 		public void run()
 		{
 			for(int i = 0; i<720; i++)
 			{
 				minute++;
 				try {
-					Thread.sleep(100);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -293,119 +827,8 @@ public class SimulPanel extends JPanel implements ActionListener  {
 					minute = 0;
 				}
 				timeLabel.setText(hour+ " : "+minute);
-				
-				
-				int totalTime = (((MainFrame.reserveQ.next().getHour()-900)/100)*60)+
-						((MainFrame.reserveQ.next().getHour()-900)-((MainFrame.reserveQ.next().getHour()-900)/100)*100);
-				if(totalTime == i)
-				{
-
-					if(MainFrame.reserveQ.next().getSeat().equals("Bar 1"))
-					{
-						stoolLabel.setText("occupied");
-						MainFrame.reserveQ.remove(MainFrame.reserveQ.next());
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Bar 2"))
-					{
-						stoolLabel2.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Bar 3"))
-					{
-						stoolLabel3.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Bar 4"))
-					{
-						stoolLabel4.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Window 1"))
-					{
-						wsLabel1.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Window 2"))
-					{
-						wsLabel2.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Window 3"))
-					{
-						//System.out.println("check");
-						wsLabel3.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Window 4"))
-					{
-						wsLabel4.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Booth 1"))
-					{
-						boothLabel1.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Booth 2"))
-					{
-						boothLabel2.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Booth 3"))
-					{
-						boothLabel3.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(MainFrame.reserveQ.next().getSeat().equals("Booth 4"))
-					{
-						boothLabel4.setText("occupied");
-						MainFrame.reserveQ.remove();
-						resetList();
-
-					}
-					if(totalTime +15 == i)
-					{
-						stoolLabel.setText("Stool 1");
-						stoolLabel2.setText("Stool 2");
-						stoolLabel3.setText("Stool 3");
-						stoolLabel4.setText("Stool 4");
-						wsLabel1.setText("Window 1");
-						wsLabel2.setText("Window 2");
-						wsLabel3.setText("Window 3");
-						wsLabel4.setText("Window 4");
-						boothLabel1.setText("Booth 1");
-						boothLabel2.setText("Booth 2");
-						boothLabel3.setText("Booth 3");
-						boothLabel4.setText("Booth 4");
-
-					}
-				}
 
 			}
-
 		}
 
 	}

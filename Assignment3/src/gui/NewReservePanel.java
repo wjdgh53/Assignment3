@@ -215,7 +215,7 @@ public class NewReservePanel extends JPanel implements ActionListener{
 		}
 		if(event.getActionCommand().equals("Done")){
 			
-			Customer c1 = new Customer(getNameField(),getPasswordField(),seatList.getSelectedValue().toString(),getTimeField());
+			//Customer c1 = new Customer(getNameField(),getPasswordField(),seatList.getSelectedValue().toString(),getTimeField());
 			if(MainFrame.reserveQ.contains(getNameField(),getPasswordField())){
 				errorLabel.setVisible(true);
 				errorLabel.setText("Id and password are already exist");
@@ -225,12 +225,12 @@ public class NewReservePanel extends JPanel implements ActionListener{
 					errorLabel.setVisible(true);
 					errorLabel.setText("This seat is occupied at this time");
 				}else{
-					MainFrame.reserveQ.offer(c1);
+					MainFrame.reserveQ.offer(new Customer(getNameField(),getPasswordField(),seatList.getSelectedValue().toString(),getTimeField()));
 					firstNameField.setText("");
 					passwordField.setText("");
 					timeField.setText("");
 					errorLabel.setVisible(true);
-					errorLabel.setText(c1+"successfully added");
+					errorLabel.setText("successfully added");
 				}
 			}
 				

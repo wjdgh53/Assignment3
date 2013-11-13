@@ -17,10 +17,10 @@ public class Customer {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Customer(String name, String password) {
+	public Customer(String name, String seat, int hour) {
 		super();
 		this.name = name;
-		this.password = password;
+		this.password = null;
 		this.seat = null;
 		this.hour = 0;
 	}

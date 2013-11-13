@@ -20,69 +20,21 @@ public class QueueDemo {
 		q.offer(c1);
 		q.offer(c2);
 		q.offer(c3);
-		//q.read();
-		for(int i = 0 ; i < q.read().length; i++)
-		{
-			System.out.println(q.read()[i]);
-			
-		}
-		//System.out.println(q.next());
-		//System.out.println(q.next());
-		/*System.out.println("input the data");
-		String name = keyboard.nextLine();
-		String password = keyboard.nextLine();
-		String seat = keyboard.nextLine();
-		int time = keyboard.nextInt();
-		keyboard.nextLine();
-		
-		System.out.println("please input the id");
-		String check = keyboard.nextLine();
-		Customer input = new Customer(name,password,seat,time);
-		q.offer(input);
+		q.offer(new Customer("hul","1232","Bar 3",200));
+		q.offer(new Customer("check","1244","Window 4", 30));
+		q.dequeue();
 		System.out.println(q);
-		System.out.println(check);
-		System.out.println(name);
-		if(check.equals(name)){
-			System.out.println("moya jinjja");
-		}
-		System.out.println(q.contains(name));
-		System.out.println(q.contains(check));*/
-		//System.out.println(q.contains("Jinlan"));
-		//System.out.println(q.contains("Jeongho"));
-		//System.out.println(q.contains("jinlan"));
+		q.dequeue();
+		System.out.println(q);
+		q.dequeue();
+		System.out.println(q);
+		q.dequeue();
+		System.out.println(q);
 		
-		//System.out.println("please input the id");
-		//String check = keyboard.nextLine();
-		//System.out.println(q.contains(check));
-		//System.out.println(q.contains("jinlan"));
-		//System.out.println(q.contains("lulu"));
-		//System.out.println(q.contains("chaewon"));
+		
 		
 	}
-	/*public static boolean check(CirQueue cq, Customer c2){
-		
-		while(!cq.isEmpty())
-		{
-			Customer c = (Customer) cq.next();
-			
-			if(c2.getSeat()==c.getSeat())
-			{
-				if((c2.getHour()-c.getHour())<=100)
-				System.out.println(c2.getHour()-c.getHour());
-				return false;
-				
-			}
-				if((c2.getHour()-c.getHour())<=100)
-				{
-					System.out.println("Please this");
-					return false;
-					
-				}
-				
-				cq.remove(c);
-			
-		}*/
-		//System.out.println(
+
 	
 
 }

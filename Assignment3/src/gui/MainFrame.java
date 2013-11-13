@@ -1,6 +1,11 @@
 package gui;
 
+
+
 import java.awt.Container;
+import java.util.Date;
+import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,6 +14,7 @@ import javax.swing.SwingUtilities;
 
 import support.CirQueue;
 import support.Customer;
+import support.RandomList;
 
 
 /**
@@ -34,15 +40,17 @@ public class MainFrame extends JFrame {
 	
 	public static void main(String[] args) 
 	{
-		MainFrame mf = new MainFrame();				
+		/*Customer c1 = new Customer("Jinlan", "Bar 1", 930);
+		Customer c2 = new Customer("Jeongho", "Bar 2", 1030);
+		Customer c3 = new Customer("Chaewon", "Bar 3", 1130);
+		Customer c4 = new Customer("jinlanjeongho", "1234","Bar 4", 905);*/
+		RandomList.waitingRandom();
+		MainFrame mf = new MainFrame();	
 		mf.setVisible(true);
-		Customer c1 = new Customer("Jeongho","123","Bar 2",930);
-		Customer c2 = new Customer("jinlan","1234","Bar 1",1000);
-		Customer c3 = new Customer("chaewon","12345","Bar 1",1300);
-		
-		waitingQ.offer(c1);
+		/*waitingQ.offer(c1);
 		waitingQ.offer(c2);
 		waitingQ.offer(c3);
+		reserveQ.offer(c4);*/
 		
 	}
 	MainFrame(){
